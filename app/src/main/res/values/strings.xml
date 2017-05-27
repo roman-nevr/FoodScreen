@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">FoodScreen</string>
+
+    <!--bottom menu-->
+    <string name="cart_title">Корзина</string>
+    <string name="pizzerias_title">Пиццерии</string>
+    <string name="profile_title">Профиль</string>
+    <string name="menu_title">Меню</string>
+
+    <!--tabs-->
+    <string name="pizza_title">Пицца</string>
+    <string name="snacks_title">Закуски</string>
+    <string name="drinks_title">Напитки</string>
+    <string name="combo_title">Комбо</string>
 </resources>
