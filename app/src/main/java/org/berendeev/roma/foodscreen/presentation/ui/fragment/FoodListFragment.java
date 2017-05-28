@@ -1,5 +1,6 @@
 package org.berendeev.roma.foodscreen.presentation.ui.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.DividerItemDecoration;
@@ -37,13 +38,13 @@ public class FoodListFragment extends MvpAppCompatFragment implements FoodListVi
 
     @Override public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        readData();
         presenter.setType(type);
     }
 
     @Nullable @Override public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.food_list, container, false);
         initUi(view);
-        readData();
         return view;
     }
 
@@ -58,6 +59,10 @@ public class FoodListFragment extends MvpAppCompatFragment implements FoodListVi
                 layoutManager.getOrientation());
         recyclerView.addItemDecoration(dividerItemDecoration);
         recyclerView.setLayoutManager(layoutManager);
+
+        if (adapter != null){
+            recyclerView.setAdapter(adapter);
+        }
     }
 
     @Override public void showList(List<FoodItem> foodItems) {

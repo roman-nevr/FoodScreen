@@ -8,6 +8,9 @@ import org.berendeev.roma.foodscreen.presentation.mvp.view.RootView;
 @InjectViewState
 public class RootViewPresenter extends MvpPresenter<RootView> {
     public RootViewPresenter() {
+    }
+
+    @Override protected void onFirstViewAttach() {
         getViewState().showMenu(1);
     }
 }

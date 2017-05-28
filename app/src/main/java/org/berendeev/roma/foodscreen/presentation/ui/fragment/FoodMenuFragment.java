@@ -1,5 +1,6 @@
 package org.berendeev.roma.foodscreen.presentation.ui.fragment;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -42,6 +43,9 @@ public class FoodMenuFragment extends MvpAppCompatFragment implements FoodMenuVi
         viewPager.setAdapter(pagerAdapter);
 
         tabLayout.setupWithViewPager(viewPager);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            tabLayout.setElevation(40.0f);
+        }
     }
 
     private List<String> getTitleList(TabLayout tabLayout) {
