@@ -2,30 +2,27 @@ package org.berendeev.roma.foodscreen;
 
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class QueensTest {
-    public static final int N = 9;
+    public static final int N = 8;
+    private int number = 0;
 
     @Test
     public void solve(){
-        List<Queen> queens = new ArrayList<>();
-        solve(queens);
+        Queen[] queens = new Queen[N];
+        solve(queens, 0);
     }
 
-    private void solve(List<Queen> queens){
-        int size = queens.size();
-        if (size == N){
+    private void solve(Queen[] queens, int iter){
+        if (iter == N){
+            number++;
             printSolution(queens);
             return;
         }
-        int y = size;
+        int y = iter;
         for (int x = 0; x < N; x++) {
-            if (isFreeCell(x, y, queens)){
-                queens.add(new Queen(x, y));
-                solve(queens);
-                queens.remove(size);
+            if (isFreeCell(x, y, queens, iter)){
+                queens[iter] = new Queen(x, y);
+                solve(queens, iter + 1);
             }
         }
     }
@@ -52,28 +49,29 @@ public class QueensTest {
 //        }
 //    }
 
-    private boolean isFreeCell(int px, int py, List<Queen> queens){
-        boolean isFree = true;
-        for (Queen queen : queens) {
+    private boolean isFreeCell(int px, int py, Queen[] queens, int number){
+        for (int index = 0; index < number; index++) {
+            Queen queen = queens[index];
             if (queen.x == px || queen.y == py) {
-                isFree = false;
+                return false;
             } else if (queen.xPlusY() == px + py) {
-                isFree = false;
+                return false;
             } else if (queen.xMinusY() == px - py) {
-                isFree = false;
+                return false;
             }
         }
-        return isFree;
+        return true;
     }
 
-    private void printSolution(List<Queen> queens){
+    private void printSolution(Queen[] queens){
+        System.out.println("solution N: " + number);
         for (int i = 0; i < N; i++) {
             System.out.print("+-");
         }
         System.out.println("+");
         for (int y = 0; y < N; y++) {
             for (int x = 0; x < N; x++) {
-                if (queens.get(y).x == x){
+                if (queens[y].x == x){
                     System.out.print("|W");
                 }else {
                     System.out.print("|o");
