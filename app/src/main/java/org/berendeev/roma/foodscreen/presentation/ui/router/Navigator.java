@@ -30,7 +30,7 @@ public class Navigator implements Router {
     }
 
     @Override public void showMenu(int from) {
-        if (fragmentManager.findFragmentById(R.id.container) == null){
+        if (fragmentManager.findFragmentById(CONTAINER_ID) == null){
             addFirstFragment();
         }else {
             showFragment(MENU, from, MENU_ID);
