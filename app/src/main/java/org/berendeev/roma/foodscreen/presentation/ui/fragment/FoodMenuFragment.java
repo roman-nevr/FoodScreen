@@ -46,6 +46,7 @@ public class FoodMenuFragment extends MvpAppCompatFragment implements FoodMenuVi
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             tabLayout.setElevation(40.0f);
         }
+
     }
 
     private List<String> getTitleList(TabLayout tabLayout) {
