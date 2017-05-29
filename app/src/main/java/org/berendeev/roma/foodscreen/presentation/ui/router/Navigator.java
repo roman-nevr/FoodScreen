@@ -20,6 +20,7 @@ public class Navigator implements Router {
     public static final int PROFILE_ID = 2;
     public static final int PIZZERIAS_ID = 3;
     public static final int CART_ID = 4;
+    public static final int CONTAINER_ID = R.id.container;
 
     private FragmentManager fragmentManager;
     private FragmentTransaction transaction;
@@ -60,7 +61,7 @@ public class Navigator implements Router {
         }
         beginTransaction();
         setAnimation(from, to);
-        showEnterFragment(tag);
+        showNextFragment(tag);
         commitTransaction();
     }
 
@@ -80,15 +81,25 @@ public class Navigator implements Router {
         }
     }
 
-    private void showEnterFragment(String tag) {
-        transaction.replace(R.id.container, getFragment(tag), tag);
+    private void showNextFragment(String tag) {
+        Fragment previousFragment = fragmentManager.findFragmentById(CONTAINER_ID);
+        transaction.detach(previousFragment);
+
+        Fragment nextFragment = fragmentManager.findFragmentByTag(tag);
+        if (nextFragment != null){
+            transaction.attach(nextFragment);
+        }else {
+            transaction.add(CONTAINER_ID, newFragment(tag), tag);
+        }
+
+//        transaction.replace(R.id.container, newFragment(tag), tag);
     }
 
     private void addFragment(String tag) {
-        transaction.add(R.id.container, getFragment(tag), tag);
+        transaction.add(CONTAINER_ID, newFragment(tag), tag);
     }
 
-    @NonNull private Fragment getFragment(String tag) {
+    @NonNull private Fragment newFragment(String tag) {
         switch (tag){
             case MENU:
                 return new FoodMenuFragment();
