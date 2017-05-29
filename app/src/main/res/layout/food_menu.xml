@@ -17,6 +17,7 @@
             android:layout_height="wrap_content"
             app:layout_scrollFlags="scroll|enterAlways"
             android:background="@android:color/white"
+            app:tabMode="scrollable"
             >
 
             <android.support.design.widget.TabItem
