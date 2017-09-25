@@ -20,7 +20,7 @@ public class FoodListAdapter extends MvpBaseAdapter<FoodListAdapter.FoodViewHold
     private List<FoodItem> products;
 
     public FoodListAdapter(MvpDelegate<?> parentDelegate, List<FoodItem> products) {
-        super(parentDelegate, String.valueOf(0)); //wtf String.valueOf(0) ?
+//        super(parentDelegate, String.valueOf(0)); //wtf String.valueOf(0) ?
         this.products = products;
         hasStableIds();
     }

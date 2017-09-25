@@ -87,4 +87,21 @@ public class FoodListFragment extends MvpAppCompatFragment implements FoodListVi
         fragment.setArguments(bundle);
         return fragment;
     }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+//        recyclerView = null;
+//        adapter = null;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
 }
