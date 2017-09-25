@@ -10,6 +10,9 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 
@@ -130,4 +133,12 @@ public class MainScreenFragment extends Fragment implements RootView{
         super.onStart();
     }
 
+//    @Override
+//    public Animation onCreateAnimation(int transit, boolean enter, int nextAnim) {
+//        if (!enter){
+//            return AnimationUtils.loadAnimation(getContext(), nextAnim);
+//        }else {
+//            return super.onCreateAnimation(transit, enter, nextAnim);
+//        }
+//    }
 }

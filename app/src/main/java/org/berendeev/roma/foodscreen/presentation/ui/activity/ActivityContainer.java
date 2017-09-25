@@ -15,15 +15,17 @@ import org.berendeev.roma.foodscreen.presentation.ui.fragment.MainScreenFragment
  */
 
 public class ActivityContainer extends AppCompatActivity {
+
+    public static final int FRAGMENT_CONTAINER = R.id.fragment_container;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_container);
         initDi();
-        int containerId = R.id.main_container;
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(containerId, new MainScreenFragment(), "main");
+        fragmentTransaction.replace(FRAGMENT_CONTAINER, new MainScreenFragment(), "main");
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }

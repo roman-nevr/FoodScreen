@@ -56,4 +56,5 @@ public class FoodMenuFragment extends MvpAppCompatFragment implements FoodMenuVi
         }
         return titles;
     }
+
 }

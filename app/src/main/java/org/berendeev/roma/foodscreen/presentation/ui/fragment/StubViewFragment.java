@@ -25,6 +25,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static android.support.v4.app.FragmentManager.POP_BACK_STACK_INCLUSIVE;
+import static org.berendeev.roma.foodscreen.presentation.ui.activity.ActivityContainer.FRAGMENT_CONTAINER;
 import static org.berendeev.roma.foodscreen.presentation.ui.fragment.DummyViewFragment.ADD;
 
 public class StubViewFragment extends MvpAppCompatFragment implements FoodMenuView, AnimationHandler {
@@ -50,21 +51,22 @@ public class StubViewFragment extends MvpAppCompatFragment implements FoodMenuVi
             @Override
             public void onClick(View v) {
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                Fragment fragmentById = fragmentManager.findFragmentById(R.id.main_container);
+                Fragment fragmentById = fragmentManager.findFragmentById(FRAGMENT_CONTAINER);
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.setCustomAnimations(R.anim.slight_fade_in, R.anim.animate_nothing,
                         R.anim.animate_nothing, R.anim.slight_fade_out);
                 fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                fragmentTransaction.add(R.id.main_container, new DummyViewFragment(), "dummy");
+                fragmentTransaction.hide(fragmentById);
+                fragmentTransaction.add(FRAGMENT_CONTAINER, new DummyViewFragment(), "dummy");
                 fragmentTransaction.addToBackStack(ADD);
                 fragmentTransaction.commit();
-                Handler handler = new Handler(Looper.myLooper());
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        fragmentManager.beginTransaction().remove(fragmentById).addToBackStack(null).commit();
-                    }
-                }, 1000);
+//                Handler handler = new Handler(Looper.myLooper());
+//                handler.postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+////                        fragmentManager.beginTransaction().remove(fragmentById).addToBackStack(null).commit();
+//                    }
+//                }, 1000);
             }
         });
     }

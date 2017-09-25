@@ -10,6 +10,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.Toast;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
@@ -17,6 +19,7 @@ import com.arellomobile.mvp.presenter.InjectPresenter;
 
 import org.berendeev.roma.foodscreen.R;
 import org.berendeev.roma.foodscreen.domain.model.FoodItem;
+import org.berendeev.roma.foodscreen.presentation.AnimationHandler;
 import org.berendeev.roma.foodscreen.presentation.mvp.presenter.FoodListPresenter;
 import org.berendeev.roma.foodscreen.presentation.mvp.view.FoodListView;
 import org.berendeev.roma.foodscreen.presentation.ui.adapter.FoodListAdapter;
@@ -27,7 +30,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class FoodListFragment extends MvpAppCompatFragment implements FoodListView {
+public class FoodListFragment extends MvpAppCompatFragment implements FoodListView
+{
 
     public static final String TYPE = "type";
 
@@ -37,6 +41,7 @@ public class FoodListFragment extends MvpAppCompatFragment implements FoodListVi
 
     private FoodListAdapter adapter;
     private String type;
+    private boolean enableAnimation = true;
 
     @Override public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,5 +91,56 @@ public class FoodListFragment extends MvpAppCompatFragment implements FoodListVi
         bundle.putString(TYPE, type);
         fragment.setArguments(bundle);
         return fragment;
+    }
+
+    @Override
+    public Animation onCreateAnimation(int transit, boolean enter, int nextAnim) {
+        if (!enter){
+            StringBuilder builder = new StringBuilder("нет анимации при ");
+            if (enter){
+                builder.append("входе");
+            }else {
+                builder.append("выходе");
+            }
+            System.out.println(builder.toString());
+            Animation animation = new AlphaAnimation(1, 1);
+            animation.setDuration(400);
+            return animation;
+//            return super.onCreateAnimation(transit, enter, R.anim.animate_nothing);
+        }else {
+            logAnimation(enter, nextAnim);
+            return super.onCreateAnimation(transit, enter, nextAnim);
+        }
+    }
+
+    private void logAnimation(boolean enter, int nextAnim) {
+        StringBuilder builder = new StringBuilder();
+        if (enter){
+            builder.append("при входе");
+        }else {
+            builder.append("при выходе");
+        }
+        builder.append(" nextAnim ");
+        switch (nextAnim){
+            case R.anim.to_left_in:{
+                builder.append("вход налево");
+                break;
+            }
+            case R.anim.to_left_out:{
+                builder.append("выход налево");
+                break;
+            }
+            case R.anim.to_right_in:{
+                builder.append("вход направо");
+                break;
+            }
+            case R.anim.to_right_out:{
+                builder.append("выход направо");
+                break;
+            }
+            default:break;
+        }
+        builder.append("\n");
+        System.out.println(builder.toString());
     }
 }
