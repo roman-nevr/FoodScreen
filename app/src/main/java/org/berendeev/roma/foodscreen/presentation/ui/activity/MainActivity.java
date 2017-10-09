@@ -3,10 +3,6 @@ package org.berendeev.roma.foodscreen.presentation.ui.activity;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 
@@ -40,7 +36,7 @@ public class MainActivity extends MvpAppCompatActivity implements RootView{
 
     private void initDi() {
         App.getMainComponent().inject(this);
-        navigator.setFragmentManger(getSupportFragmentManager());
+        navigator.initNavigator(getSupportFragmentManager(), R.id.main_container);
     }
 
     private void initNavigation() {
@@ -78,7 +74,6 @@ public class MainActivity extends MvpAppCompatActivity implements RootView{
             return false;
         }
     };
-
 
     @Override public void showMenu(int from) {
         navigator.showMenu(from);

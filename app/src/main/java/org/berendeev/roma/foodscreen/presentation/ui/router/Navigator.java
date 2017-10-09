@@ -1,11 +1,13 @@
 package org.berendeev.roma.foodscreen.presentation.ui.router;
 
+import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
 import org.berendeev.roma.foodscreen.R;
+import org.berendeev.roma.foodscreen.presentation.AnimationHandler;
 import org.berendeev.roma.foodscreen.presentation.ui.fragment.FoodMenuFragment;
 import org.berendeev.roma.foodscreen.presentation.ui.fragment.StubViewFragment;
 
@@ -20,17 +22,18 @@ public class Navigator implements Router {
     public static final int PROFILE_ID = 2;
     public static final int PIZZERIAS_ID = 3;
     public static final int CART_ID = 4;
-    public static final int CONTAINER_ID = R.id.container;
 
     private FragmentManager fragmentManager;
     private FragmentTransaction transaction;
+    private int containerId;
 
-    public void setFragmentManger(FragmentManager fragmentManager) {
+    public void initNavigator(FragmentManager fragmentManager, @IdRes int containerId) {
         this.fragmentManager = fragmentManager;
+        this.containerId = containerId;
     }
 
     @Override public void showMenu(int from) {
-        if (fragmentManager.findFragmentById(CONTAINER_ID) == null){
+        if (fragmentManager.findFragmentById(containerId) == null){
             addFirstFragment();
         }else {
             showFragment(MENU, from, MENU_ID);
@@ -75,28 +78,28 @@ public class Navigator implements Router {
 
     private void setAnimation(int from, int to){
         if(from > to){
-            transaction.setCustomAnimations(R.anim.to_left_in, R.anim.to_right_out);
+            transaction.setCustomAnimations(R.anim.to_right_in, R.anim.to_right_out);
         }else {
-            transaction.setCustomAnimations(R.anim.to_right_in, R.anim.to_left_out);
+            transaction.setCustomAnimations(R.anim.to_left_in, R.anim.to_left_out);
         }
     }
 
     private void showNextFragment(String tag) {
-        Fragment previousFragment = fragmentManager.findFragmentById(CONTAINER_ID);
+        Fragment previousFragment = fragmentManager.findFragmentById(containerId);
         transaction.detach(previousFragment);
 
         Fragment nextFragment = fragmentManager.findFragmentByTag(tag);
         if (nextFragment != null){
             transaction.attach(nextFragment);
         }else {
-            transaction.add(CONTAINER_ID, newFragment(tag), tag);
+            transaction.add(containerId, newFragment(tag), tag);
         }
 
 //        transaction.replace(R.id.container, newFragment(tag), tag);
     }
 
     private void addFragment(String tag) {
-        transaction.add(CONTAINER_ID, newFragment(tag), tag);
+        transaction.add(containerId, newFragment(tag), tag);
     }
 
     @NonNull private Fragment newFragment(String tag) {

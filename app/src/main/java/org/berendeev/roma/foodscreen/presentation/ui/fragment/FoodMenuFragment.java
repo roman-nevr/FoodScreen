@@ -56,10 +56,4 @@ public class FoodMenuFragment extends MvpAppCompatFragment implements FoodMenuVi
         }
         return titles;
     }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-
-    }
 }

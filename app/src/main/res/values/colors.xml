@@ -8,4 +8,6 @@
     <color name="light_grey">#9b9b9b</color>
     <color name="dark_grey">#6e6e6e</color>
     <color name="shadow_color">#ffffff</color>
+
+    <color name="colorPrimaryTransparent">#9affa000</color>
 </resources>
