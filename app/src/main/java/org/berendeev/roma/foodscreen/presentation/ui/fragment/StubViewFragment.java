@@ -33,6 +33,7 @@ public class StubViewFragment extends MvpAppCompatFragment implements FoodMenuVi
     public static final String MESSAGE = "message";
     @BindView(R.id.stub_message) TextView tvMessage;
     @BindView(R.id.test_button) Button testButton;
+    @BindView(R.id.test_view_pager) Button testViewPager;
     private String messageString;
     private boolean enableAnimation = true;
 
@@ -67,6 +68,23 @@ public class StubViewFragment extends MvpAppCompatFragment implements FoodMenuVi
 ////                        fragmentManager.beginTransaction().remove(fragmentById).addToBackStack(null).commit();
 //                    }
 //                }, 1000);
+            }
+        });
+
+        testViewPager.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                Fragment fragmentById = fragmentManager.findFragmentById(FRAGMENT_CONTAINER);
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.setCustomAnimations(R.anim.slight_fade_in, R.anim.animate_nothing,
+                        R.anim.animate_nothing, R.anim.slight_fade_out);
+                fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                fragmentTransaction.hide(fragmentById);
+                fragmentTransaction.add(FRAGMENT_CONTAINER, new FragmentManagmentFragment(), "dummy");
+                fragmentTransaction.addToBackStack(ADD);
+                fragmentTransaction.commit();
             }
         });
     }
