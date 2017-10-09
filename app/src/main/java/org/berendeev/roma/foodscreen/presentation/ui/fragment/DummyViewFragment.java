@@ -80,7 +80,12 @@ public class DummyViewFragment extends MvpAppCompatFragment implements FoodMenuV
     }
 
     private void readData() {
-        messageString = this.getClass().getSimpleName();
+        Bundle arguments = getArguments();
+        if (arguments != null){
+            messageString = this.getClass().getSimpleName() + " " + this.hashCode() + "\n" + arguments.getString(MESSAGE, "");
+        }else {
+            messageString = this.getClass().getSimpleName() + " " + this.hashCode();
+        }
     }
 
     public static DummyViewFragment getInstance(String message) {
@@ -103,5 +108,12 @@ public class DummyViewFragment extends MvpAppCompatFragment implements FoodMenuV
     @Override
     public void enableAnimation(boolean enable) {
         this.enableAnimation = enable;
+    }
+
+    public String getMessage(){
+        Bundle arguments = getArguments();
+        if (arguments != null){
+            return arguments.getString(MESSAGE, "");
+        } else return "";
     }
 }
