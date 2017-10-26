@@ -14,6 +14,7 @@ import com.arellomobile.mvp.MvpAppCompatFragment;
 import org.berendeev.roma.foodscreen.R;
 import org.berendeev.roma.foodscreen.presentation.mvp.view.FoodListView;
 import org.berendeev.roma.foodscreen.presentation.mvp.view.FoodMenuView;
+import org.berendeev.roma.foodscreen.presentation.ui.adapter.CustomScroller;
 import org.berendeev.roma.foodscreen.presentation.ui.adapter.FoodViewPagerAdapter;
 
 import java.util.ArrayList;
@@ -41,6 +42,7 @@ public class FoodMenuFragment extends MvpAppCompatFragment implements FoodMenuVi
         pagerAdapter = new FoodViewPagerAdapter(getChildFragmentManager(), getTitleList(tabLayout));
 
         viewPager.setAdapter(pagerAdapter);
+        CustomScroller.setupPager(viewPager);
 
         tabLayout.setupWithViewPager(viewPager);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

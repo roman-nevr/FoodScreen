@@ -5,6 +5,10 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.transition.Fade;
+import android.transition.Slide;
+import android.view.Gravity;
+import android.view.animation.DecelerateInterpolator;
 
 import org.berendeev.roma.foodscreen.R;
 import org.berendeev.roma.foodscreen.presentation.AnimationHandler;
@@ -63,9 +67,33 @@ public class Navigator implements Router {
             return;
         }
         beginTransaction();
-        setAnimation(from, to);
-        showNextFragment(tag);
+//        setAnimation(from, to);
+        Fragment previousFragment = fragmentManager.findFragmentById(containerId);
+        Fragment nextFragment = fragmentManager.findFragmentByTag(tag);
+        detachPreviousFragment(previousFragment);
+        if (nextFragment == null){
+            nextFragment = newFragment(tag);
+            addNextFragment(nextFragment, tag);
+        }else {
+            attachNextFragment(nextFragment);
+        }
+        animate(nextFragment, previousFragment, from, to);
+//        showNextFragment(tag);
         commitTransaction();
+    }
+
+    private void animate(Fragment nextFragment, Fragment previousFragment, int from, int to) {
+        if(from > to){
+            nextFragment.setEnterTransition(new Slide(Gravity.LEFT).setDuration(1000).setInterpolator(new DecelerateInterpolator()));
+            nextFragment.setReturnTransition(new Slide(Gravity.LEFT).setDuration(1000).setInterpolator(new DecelerateInterpolator()));
+            previousFragment.setExitTransition(new Slide(Gravity.RIGHT).setDuration(1000).setInterpolator(new DecelerateInterpolator()));
+            previousFragment.setReenterTransition(new Slide(Gravity.RIGHT).setDuration(1000).setInterpolator(new DecelerateInterpolator()));
+        }else {
+            nextFragment.setEnterTransition(new Slide(Gravity.RIGHT).setDuration(1000).setInterpolator(new DecelerateInterpolator()));
+            nextFragment.setReturnTransition(new Slide(Gravity.RIGHT).setDuration(1000).setInterpolator(new DecelerateInterpolator()));
+            previousFragment.setExitTransition(new Slide(Gravity.LEFT).setDuration(1000).setInterpolator(new DecelerateInterpolator()));
+            previousFragment.setReenterTransition(new Slide(Gravity.LEFT).setDuration(1000).setInterpolator(new DecelerateInterpolator()));
+        }
     }
 
     private void beginTransaction(){
@@ -84,19 +112,29 @@ public class Navigator implements Router {
         }
     }
 
-    private void showNextFragment(String tag) {
-        Fragment previousFragment = fragmentManager.findFragmentById(containerId);
-        transaction.detach(previousFragment);
-
-        Fragment nextFragment = fragmentManager.findFragmentByTag(tag);
-        if (nextFragment != null){
-            transaction.attach(nextFragment);
-        }else {
-            transaction.add(containerId, newFragment(tag), tag);
-        }
-
-//        transaction.replace(R.id.container, newFragment(tag), tag);
+    private void detachPreviousFragment(Fragment fragment){
+        transaction.detach(fragment);
     }
+
+    private void addNextFragment(Fragment fragment, String tag){
+        transaction.add(containerId, fragment, tag);
+    }
+
+    private void attachNextFragment(Fragment fragment){
+        transaction.attach(fragment);
+    }
+
+//    private void showNextFragment(String tag) {
+//        Fragment previousFragment = fragmentManager.findFragmentById(containerId);
+//        transaction.detach(previousFragment);
+//
+//        Fragment nextFragment = fragmentManager.findFragmentByTag(tag);
+//        if (nextFragment != null){
+//            transaction.attach(nextFragment);
+//        }else {
+//            transaction.add(containerId, newFragment(tag), tag);
+//        }
+//    }
 
     private void addFragment(String tag) {
         transaction.add(containerId, newFragment(tag), tag);

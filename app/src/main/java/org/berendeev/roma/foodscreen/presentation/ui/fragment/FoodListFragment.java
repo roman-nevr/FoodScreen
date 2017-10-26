@@ -73,7 +73,7 @@ public class FoodListFragment extends MvpAppCompatFragment implements FoodListVi
 
     @Override public void showList(List<FoodItem> foodItems) {
         if(adapter == null){
-            adapter = new FoodListAdapter(getMvpDelegate(), foodItems);
+            adapter = new FoodListAdapter(foodItems);
             recyclerView.setAdapter(adapter);
         }else {
             adapter.update(foodItems);
