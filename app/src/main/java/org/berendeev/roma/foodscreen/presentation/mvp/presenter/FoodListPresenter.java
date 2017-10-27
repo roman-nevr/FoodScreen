@@ -15,6 +15,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 
+import static org.berendeev.roma.foodscreen.data.FoodRepositoryImpl.IMAGE_URL;
+
 @InjectViewState
 public class FoodListPresenter extends MvpPresenter<FoodListView> {
 
@@ -52,7 +54,8 @@ public class FoodListPresenter extends MvpPresenter<FoodListView> {
     private List<FoodItem> createItems(String type){
         List<FoodItem> foodItems = new ArrayList<>();
         for (int i = 0; i < 100; i++) {
-            FoodItem foodItem = FoodItem.create(String.valueOf(i) + " -- " + type);
+            FoodItem foodItem = FoodItem.create(String.valueOf(i) + " -- " + type,
+                    IMAGE_URL);
             foodItems.add(foodItem);
         }
         return foodItems;

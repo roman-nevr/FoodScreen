@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:orientation="horizontal"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:paddingLeft="16dp"
+              android:paddingRight="16dp"
+              android:paddingTop="8dp"
+              android:paddingBottom="8dp">
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="128dp"
+        android:layout_height="128dp"
+        app:srcCompat="@drawable/round_pizza"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="16dp"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/label_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Пряности и радости"
+            android:textColor="@android:color/black"
+            style="@style/Text16Title"/>
+        <TextView
+            android:id="@+id/label_summary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Томатный соус, карри, лук, цыпленок, бекон, ананас, моцарелла"
+            android:textColor="@color/grey"
+            style="@style/Text14M"/>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            >
+            <TextView
+                android:id="@+id/label_not_available"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="нету"
+                android:textColor="@color/red"
+                style="@style/Text16Title"
+                android:visibility="gone"
+                tools:visibility="visible"
+                />
+            <LinearLayout
+                android:id="@+id/available"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="visible"
+                >
+                <Button
+                    android:id="@+id/select_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="28dp"
+                    android:textSize="14sp"
+                    android:background="@drawable/orange_border_button"
+                    android:text="Выбрать"/>
+                <TextView
+                    android:id="@+id/label_cost"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="0dp"
+                    tools:text="от 495 \u20BD"
+                    android:textColor="@android:color/black"
+                    style="@style/Text16Title"/>
+
+            </LinearLayout>
+        </FrameLayout>
+    </LinearLayout>
+
+</LinearLayout>

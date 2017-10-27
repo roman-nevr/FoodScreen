@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.bumptech.glide.Glide;
 
 import org.berendeev.roma.foodscreen.R;
 import org.berendeev.roma.foodscreen.domain.model.FoodItem;
@@ -23,6 +24,7 @@ import org.berendeev.roma.foodscreen.presentation.AnimationHandler;
 import org.berendeev.roma.foodscreen.presentation.mvp.presenter.FoodListPresenter;
 import org.berendeev.roma.foodscreen.presentation.mvp.view.FoodListView;
 import org.berendeev.roma.foodscreen.presentation.ui.adapter.FoodListAdapter;
+import org.berendeev.roma.foodscreen.presentation.ui.adapter.FoodListAdapter2;
 
 import java.util.List;
 
@@ -38,9 +40,12 @@ public class FoodListFragment extends MvpAppCompatFragment implements FoodListVi
 
     @InjectPresenter FoodListPresenter presenter;
 
+    private FoodListAdapter2 adapter2;
     private FoodListAdapter adapter;
     private String type;
     private boolean enableAnimation = true;
+
+    private boolean useAdapter2 = true;
 
     @Override public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,18 +70,48 @@ public class FoodListFragment extends MvpAppCompatFragment implements FoodListVi
                 layoutManager.getOrientation());
         recyclerView.addItemDecoration(dividerItemDecoration);
         recyclerView.setLayoutManager(layoutManager);
+       if (useAdapter2){
+           setAdapter2();
+       }else {
+           setAdapter();
+       }
+    }
 
+    private void setAdapter(){
         if (adapter != null){
             recyclerView.setAdapter(adapter);
         }
     }
 
+    private void setAdapter2(){
+        if (adapter2 != null){
+            recyclerView.setAdapter(adapter2);
+        }
+    }
+
     @Override public void showList(List<FoodItem> foodItems) {
+        if (useAdapter2){
+            useAdapter2(foodItems);
+        }else {
+            useAdapter(foodItems);
+        }
+    }
+
+    private void useAdapter(List<FoodItem> foodItems){
         if(adapter == null){
             adapter = new FoodListAdapter(foodItems);
             recyclerView.setAdapter(adapter);
         }else {
             adapter.update(foodItems);
+        }
+    }
+
+    private void useAdapter2(List<FoodItem> foodItems){
+        if(adapter2 == null){
+            adapter2 = new FoodListAdapter2(foodItems, Glide.with(this), getContext());
+            recyclerView.setAdapter(adapter2);
+        }else {
+            adapter2.update(foodItems);
         }
     }
 

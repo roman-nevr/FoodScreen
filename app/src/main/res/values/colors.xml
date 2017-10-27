@@ -10,4 +10,14 @@
     <color name="shadow_color">#ffffff</color>
 
     <color name="colorPrimaryTransparent">#9affa000</color>
+
+    <color name="grey">#999999</color>
+    <color name="red">#ff6161</color>
+
+    <color name="orangePlaceBackground">#f6921e</color>
+    <color name="orangeSplashBackground">#f26a21</color>
+    <color name="orangeDarkButton">#e75500</color>
+    <color name="orangeDarkPressButton">#eb7439</color>
+    <color name="orangeDarkDisabledButton">#ffccb3</color>
+    <color name="backgroundPressButton">#ebebeb</color>
 </resources>
