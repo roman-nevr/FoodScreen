@@ -13,20 +13,121 @@
         android:layout_height="wrap_content"
         android:background="@android:color/white"
         >
+
         <android.support.design.widget.CollapsingToolbarLayout
             android:id="@+id/collapsing_toolbar"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/colorPrimary"
             app:contentScrim="?attr/colorPrimary"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             >
-            <ImageView
+
+
+            <LinearLayout
+                android:id="@+id/collapsing_part"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:src="@drawable/material"
-                android:scaleType="centerCrop"
-                />
+                android:layout_height="wrap_content"
+                android:paddingBottom="24dp"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                android:orientation="vertical">
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="?attr/actionBarSize"/>
+
+                <android.support.v7.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/promo_action"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingTop="16dp"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp">
+
+                    <Button
+                        android:id="@+id/promocode_btn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        style="@style/DarkOrangeButton"
+                        android:text="PromoCode"/>
+
+                    <Button
+                        android:id="@+id/show_qr_btn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginLeft="14dp"
+                        android:drawableLeft="@drawable/ic_qr_gray"
+                        style="@style/DarkOrangeButton"
+                        android:text="QR"
+                        tools:visibility="gone"/>
+                    <ProgressBar
+                        android:id="@+id/qr_code_progress"
+                        android:layout_width="match_parent"
+                        android:layout_height="36dp"
+                        android:visibility="gone"
+                        tools:visibility="visible"
+                        android:layout_weight="1"
+                        android:indeterminateDrawable="@drawable/progress_bar_color"
+                        />
+
+                </LinearLayout>
+            </LinearLayout>
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:layout_collapseMode="pin"
+                android:background="@color/colorPrimary"
+                app:layout_scrollFlags="snap|enterAlways"
+                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+                <!--?attr/actionBarSize-->
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/toolbar_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    >
+                    <View
+                        android:id="@+id/gap_view"
+                        android:layout_width="1dp"
+                        android:layout_height="?attr/actionBarSize"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        />
+
+                    <Button
+                        android:id="@+id/city_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toTopOf="@+id/gap_view"
+                        app:layout_constraintBottom_toBottomOf="@+id/gap_view"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        android:paddingLeft="16dp"
+                        android:drawablePadding="8dp"
+                        android:text="Воронеж"
+                        style="@style/WhiteTextButton"/>
+
+
+                    <Button
+                        android:id="@+id/dodo_ruble_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toTopOf="@+id/gap_view"
+                        app:layout_constraintBottom_toBottomOf="@+id/gap_view"
+                        app:layout_constraintRight_toRightOf="parent"
+                        android:paddingRight="16dp"
+                        tools:text="DodoRub"
+                        style="@style/WhiteTextButton"
+                        tools:visibility="visible"/>
+                </android.support.constraint.ConstraintLayout>
+            </android.support.v7.widget.Toolbar>
+
         </android.support.design.widget.CollapsingToolbarLayout>
         <android.support.design.widget.TabLayout
             android:id="@+id/tab_layout"

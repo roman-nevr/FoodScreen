@@ -28,7 +28,7 @@ import static android.support.v4.app.FragmentManager.POP_BACK_STACK_INCLUSIVE;
 import static org.berendeev.roma.foodscreen.presentation.ui.activity.ActivityContainer.FRAGMENT_CONTAINER;
 import static org.berendeev.roma.foodscreen.presentation.ui.fragment.DummyViewFragment.ADD;
 
-public class StubViewFragment extends MvpAppCompatFragment implements FoodMenuView, AnimationHandler {
+public class StubViewFragment extends Fragment implements FoodMenuView, AnimationHandler {
 
     public static final String MESSAGE = "message";
     @BindView(R.id.stub_message) TextView tvMessage;

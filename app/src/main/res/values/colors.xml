@@ -20,4 +20,16 @@
     <color name="orangeDarkPressButton">#eb7439</color>
     <color name="orangeDarkDisabledButton">#ffccb3</color>
     <color name="backgroundPressButton">#ebebeb</color>
+
+    <color name="greyNavBar">#fafafa</color>
+    <color name="greyEnabled">#979797</color>
+    <color name="greyPayment">#f7f7f7</color>
+
+    <color name="map_circle_normal">#ccffffff</color>
+    <color name="map_circle_pressed">#bab4b4b4</color>
+    <color name="toast_background">#def6921e</color>
+
+    <color name="error">#ff5555</color>
+    <color name="red_bright">#ff0000</color>
+    <color name="black">#ff000000</color>
 </resources>

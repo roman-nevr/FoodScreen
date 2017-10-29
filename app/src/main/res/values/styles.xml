@@ -33,5 +33,28 @@
         <item name="android:textSize">14sp</item>
         <item name="android:textStyle">normal</item>
     </style>
+    <style name="DarkOrangeButton" parent="Widget.AppCompat.Button.Borderless">
+        <item name="android:background">@drawable/orange_dark_button</item>
+        <item name="android:foreground">?attr/selectableItemBackground</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:minHeight">36dp</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingRight">10dp</item>
+    </style>
+
+    <style name="WhiteTextButton" parent="Widget.AppCompat.Button.Borderless">
+        <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+
+    <style name="Text18Title">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Title</item>
+    </style>
 
 </resources>

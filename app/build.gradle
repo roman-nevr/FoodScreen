@@ -25,6 +25,7 @@ android {
 }
 
 def glide = '4.1.1'
+def ahbottomnav = '2.1.0'
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
@@ -66,4 +67,6 @@ dependencies {
         // Excludes the support library because it's already included by Glide.
         transitive = false
     }
+    //ahbottomnavigation
+    compile "com.aurelhubert:ahbottomnavigation:$ahbottomnav"
 }

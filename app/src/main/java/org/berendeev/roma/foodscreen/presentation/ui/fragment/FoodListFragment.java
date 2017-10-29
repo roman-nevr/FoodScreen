@@ -62,6 +62,7 @@ public class FoodListFragment extends MvpAppCompatFragment implements FoodListVi
     private void initUi(View view) {
         ButterKnife.bind(this, view);
         initRecyclerView();
+
     }
 
     private void initRecyclerView() {

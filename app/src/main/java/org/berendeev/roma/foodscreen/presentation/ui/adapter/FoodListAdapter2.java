@@ -44,7 +44,7 @@ public class FoodListAdapter2 extends MvpBaseAdapter<FoodListAdapter2.FoodViewHo
     }
 
     @Override public FoodViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = inflate(R.layout.menu_item_pizza_list, parent);
+        View view = inflate(R.layout.menu_item_pizza_list2, parent);
         return new FoodViewHolder(view);
     }
 

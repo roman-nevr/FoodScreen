@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,8 +14,11 @@ import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Toast;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
+import com.aurelhubert.ahbottomnavigation.AHBottomNavigationAdapter;
 
 import org.berendeev.roma.foodscreen.R;
 import org.berendeev.roma.foodscreen.presentation.AnimationHandler;
@@ -41,7 +45,7 @@ public class MainScreenFragment extends Fragment implements RootView{
     RootViewPresenter presenter;
 
     @BindView(R.id.navigation)
-    BottomNavigationView navigation;
+    AHBottomNavigation navigation;
 
     @Nullable
     @Override
@@ -63,7 +67,26 @@ public class MainScreenFragment extends Fragment implements RootView{
     }
 
     private void initNavigation() {
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        AHBottomNavigationAdapter navigationAdapter = new AHBottomNavigationAdapter(getActivity(), R.menu.navigation);
+        navigationAdapter.setupWithBottomNavigation(navigation);
+
+        // Set background color
+        navigation.setDefaultBackgroundColor(ContextCompat.getColor(getContext(), R.color.greyNavBar));
+
+        // Set title text size SP
+        navigation.setTitleTextSizeInSp(14, 12);
+
+        // Change colors
+        navigation.setAccentColor(ContextCompat.getColor(getContext(), R.color.black));
+        navigation.setInactiveColor(ContextCompat.getColor(getContext(), R.color.grey));
+
+        // Manage titles
+        navigation.setTitleState(AHBottomNavigation.TitleState.ALWAYS_SHOW);
+
+        // Customize notification background
+        navigation.setNotificationBackgroundColor(ContextCompat.getColor(getContext(), R.color.red_bright));
+
+        navigation.setOnTabSelectedListener(mOnNavigationItemSelectedListener);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             navigation.setElevation(40f);
@@ -71,29 +94,28 @@ public class MainScreenFragment extends Fragment implements RootView{
         navigator.showMenu(1);
     }
 
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
+    private AHBottomNavigation.OnTabSelectedListener mOnNavigationItemSelectedListener
+            = new AHBottomNavigation.OnTabSelectedListener() {
 
         @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            int id = navigation.getSelectedItemId();
-            int from = navigation.getMenu().findItem(id).getOrder();
-
-            switch (item.getItemId()) {
-                case R.id.menu:
+        public boolean onTabSelected(int position, boolean wasSelected) {
+            int from = navigation.getCurrentItem();
+            Toast.makeText(getContext(), ""+from, Toast.LENGTH_SHORT).show();
+            switch (position) {
+                case 0:
                     navigator.showMenu(from);
                     return true;
-                case R.id.profile:
+                case 1:
                     navigator.showProfile(from);
                     return true;
-                case R.id.pizzerias:
+                case 2:
                     navigator.showPizzerias(from);
                     return true;
-                case R.id.cart:
+                case 3:
                     navigator.showCart(from);
                     return true;
             }
-            return false;
+            return true;
         }
     };
 

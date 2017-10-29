@@ -2,6 +2,7 @@ package org.berendeev.roma.foodscreen.presentation.ui.adapter;
 
 import android.content.Context;
 import android.support.v4.view.ViewPager;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
 import android.widget.Scroller;
@@ -49,12 +50,20 @@ public class CustomScroller extends Scroller{
 		this.mDuration = mDuration;
 	}
 
+	private static final Interpolator sInterpolator = new Interpolator() {
+		@Override
+		public float getInterpolation(float t) {
+			t -= 1.0f;
+			return t * t * t * t * t + 1.0f;
+		}
+	};
+
 	public static void setupPager(ViewPager mPager){
 		try {
 			Field mScroller;
 			mScroller = ViewPager.class.getDeclaredField("mScroller");
 			mScroller.setAccessible(true);
-			CustomScroller scroller = new CustomScroller(mPager.getContext(), new DecelerateInterpolator());
+			CustomScroller scroller = new CustomScroller(mPager.getContext(), sInterpolator);
 			// scroller.setFixedDuration(5000);
 			mScroller.set(mPager, scroller);
 		} catch (NoSuchFieldException e) {
