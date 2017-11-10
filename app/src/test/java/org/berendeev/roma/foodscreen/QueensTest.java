@@ -2,14 +2,24 @@ package org.berendeev.roma.foodscreen;
 
 import org.junit.Test;
 
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+
+import io.reactivex.Observable;
+import io.reactivex.schedulers.Schedulers;
+
 public class QueensTest {
     public static final int N = 8;
     private int number = 0;
 
     @Test
-    public void solve(){
+    public void solve() throws InterruptedException {
         Queen[] queens = new Queen[N];
         solve(queens, 0);
+    }
+
+    private String getThreadName(){
+        return Thread.currentThread().getName();
     }
 
     private void solve(Queen[] queens, int iter){
