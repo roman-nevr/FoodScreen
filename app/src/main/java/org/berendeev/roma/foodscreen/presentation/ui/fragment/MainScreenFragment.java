@@ -100,7 +100,6 @@ public class MainScreenFragment extends Fragment implements RootView{
         @Override
         public boolean onTabSelected(int position, boolean wasSelected) {
             int from = navigation.getCurrentItem();
-            Toast.makeText(getContext(), ""+from, Toast.LENGTH_SHORT).show();
             switch (position) {
                 case 0:
                     navigator.showMenu(from);

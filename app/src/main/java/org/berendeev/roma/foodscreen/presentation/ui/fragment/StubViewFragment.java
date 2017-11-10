@@ -37,9 +37,14 @@ public class StubViewFragment extends Fragment implements FoodMenuView, Animatio
     private String messageString;
     private boolean enableAnimation = true;
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        readData();
+    }
+
     @Nullable @Override public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.stub_layout, container, false);
-        readData();
         initUi(view);
         return view;
     }

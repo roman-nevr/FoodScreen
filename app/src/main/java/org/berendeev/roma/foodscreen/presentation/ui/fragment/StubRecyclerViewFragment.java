@@ -1,133 +1,96 @@
 package org.berendeev.roma.foodscreen.presentation.ui.fragment;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
-import android.widget.Toast;
+import android.widget.Button;
+import android.widget.TextView;
 
-import com.arellomobile.mvp.MvpAppCompatFragment;
-import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.bumptech.glide.Glide;
 
 import org.berendeev.roma.foodscreen.R;
 import org.berendeev.roma.foodscreen.domain.model.FoodItem;
 import org.berendeev.roma.foodscreen.presentation.AnimationHandler;
-import org.berendeev.roma.foodscreen.presentation.mvp.presenter.FoodListPresenter;
-import org.berendeev.roma.foodscreen.presentation.mvp.view.FoodListView;
-import org.berendeev.roma.foodscreen.presentation.ui.adapter.FoodListAdapter;
+import org.berendeev.roma.foodscreen.presentation.mvp.view.FoodMenuView;
 import org.berendeev.roma.foodscreen.presentation.ui.adapter.FoodListAdapter2;
+import org.berendeev.roma.foodscreen.presentation.ui.views.CustomRVView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static org.berendeev.roma.foodscreen.data.FoodRepositoryImpl.IMAGE_URL;
+import static org.berendeev.roma.foodscreen.presentation.ui.activity.ActivityContainer.FRAGMENT_CONTAINER;
+import static org.berendeev.roma.foodscreen.presentation.ui.fragment.DummyViewFragment.ADD;
 
-public class FoodListFragment extends MvpAppCompatFragment implements FoodListView {
+public class StubRecyclerViewFragment extends Fragment implements FoodMenuView, AnimationHandler {
 
-    public static final String TYPE = "type";
+    public static final String MESSAGE = "message";
 
-    @BindView(R.id.recycler_view) RecyclerView recyclerView;
-
-    @InjectPresenter FoodListPresenter presenter;
-
-    private FoodListAdapter2 adapter2;
-    private FoodListAdapter adapter;
-    private String type;
+    private String messageString;
     private boolean enableAnimation = true;
+    private FoodListAdapter2 adapter2;
 
-    private boolean useAdapter2 = true;
-
-    @Override public void onCreate(Bundle savedInstanceState) {
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         readData();
-        presenter.setType(type);
     }
 
     @Nullable @Override public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.food_list, container, false);
-        initUi(view);
-        return view;
+        CustomRVView<FoodItem> customRVView = new CustomRVView<>(getContext());
+        initUi(customRVView);
+        return customRVView;
     }
 
-    private void initUi(View view) {
-        ButterKnife.bind(this, view);
-        initRecyclerView();
-
-    }
-
-    private void initRecyclerView() {
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        recyclerView.setLayoutManager(layoutManager);
-       if (useAdapter2){
-           setAdapter2();
-       }else {
-           setAdapter();
-       }
-    }
-
-    private void setAdapter(){
-        if (adapter != null){
-            recyclerView.setAdapter(adapter);
-        }
-    }
-
-    private void setAdapter2(){
-        if (adapter2 != null){
-            recyclerView.setAdapter(adapter2);
-        }
-    }
-
-    @Override public void showList(List<FoodItem> foodItems) {
-        if (useAdapter2){
-            useAdapter2(foodItems);
-        }else {
-            useAdapter(foodItems);
-        }
-    }
-
-    private void useAdapter(List<FoodItem> foodItems){
-        if(adapter == null){
-            adapter = new FoodListAdapter(foodItems);
-            recyclerView.setAdapter(adapter);
-        }else {
-            adapter.update(foodItems);
-        }
-    }
-
-    private void useAdapter2(List<FoodItem> foodItems){
+    private void initUi(CustomRVView<FoodItem> view) {
+        List<FoodItem> foodItems = createItems(messageString);
         if(adapter2 == null){
             adapter2 = new FoodListAdapter2(foodItems, Glide.with(this), getContext());
-            recyclerView.setAdapter(adapter2);
         }else {
             adapter2.update(foodItems);
         }
+        view.setAdapter(adapter2);
+    }
+
+    private List<FoodItem> createItems(String type){
+        List<FoodItem> foodItems = new ArrayList<>();
+        for (int i = 0; i < 100; i++) {
+            FoodItem foodItem = FoodItem.create(String.valueOf(i) + " -- " + type,
+                    IMAGE_URL);
+            foodItems.add(foodItem);
+        }
+        return foodItems;
     }
 
     private void readData() {
-        type = getArguments().getString(TYPE);
+        if (getArguments() != null){
+            messageString = getArguments().getString(MESSAGE);
+        }else {
+            messageString = "LoremIpsum";
+        }
     }
 
-    public static FoodListFragment getInstance(String type) {
-        FoodListFragment fragment = new FoodListFragment();
+    public static StubRecyclerViewFragment getInstance(String message) {
+        StubRecyclerViewFragment fragment = new StubRecyclerViewFragment();
         Bundle bundle = new Bundle();
-        bundle.putString(TYPE, type);
+        bundle.putString(MESSAGE, message);
         fragment.setArguments(bundle);
         return fragment;
     }
 
     @Override
     public Animation onCreateAnimation(int transit, boolean enter, int nextAnim) {
-        if (!enter){
+        if (!enableAnimation){
             StringBuilder builder = new StringBuilder("нет анимации при ");
             if (enter){
                 builder.append("входе");
@@ -136,7 +99,6 @@ public class FoodListFragment extends MvpAppCompatFragment implements FoodListVi
             }
             System.out.println(builder.toString());
             Animation animation = new AlphaAnimation(1, 1);
-            animation.setDuration(400);
             return animation;
 //            return super.onCreateAnimation(transit, enter, R.anim.animate_nothing);
         }else {
@@ -174,5 +136,15 @@ public class FoodListFragment extends MvpAppCompatFragment implements FoodListVi
         }
         builder.append("\n");
         System.out.println(builder.toString());
+    }
+
+    @Override
+    public void enableAnimation(boolean enable) {
+        if (enable){
+            System.out.println("enable animation");
+        }else {
+            System.out.println("disable animation");
+        }
+        this.enableAnimation = enable;
     }
 }

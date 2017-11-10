@@ -16,6 +16,7 @@ import android.widget.Toast;
 import org.berendeev.roma.foodscreen.R;
 import org.berendeev.roma.foodscreen.presentation.AnimationHandler;
 import org.berendeev.roma.foodscreen.presentation.ui.fragment.FoodMenuFragment;
+import org.berendeev.roma.foodscreen.presentation.ui.fragment.StubRecyclerViewFragment;
 import org.berendeev.roma.foodscreen.presentation.ui.fragment.StubViewFragment;
 
 public class Navigator implements Router {
@@ -175,7 +176,7 @@ public class Navigator implements Router {
             case PROFILE:
                 return StubViewFragment.getInstance("Профайл");
             case CART:
-                return StubViewFragment.getInstance("Корзина");
+                return StubRecyclerViewFragment.getInstance("Корзина");
             default:
                 throw new IllegalArgumentException();
         }
