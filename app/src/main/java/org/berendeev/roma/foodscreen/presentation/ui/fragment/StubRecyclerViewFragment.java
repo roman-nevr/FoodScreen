@@ -5,6 +5,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,6 +42,8 @@ public class StubRecyclerViewFragment extends Fragment implements FoodMenuView, 
     private boolean enableAnimation = true;
     private FoodListAdapter2 adapter2;
 
+    @BindView(R.id.recycler_view) RecyclerView recyclerView;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,15 +51,28 @@ public class StubRecyclerViewFragment extends Fragment implements FoodMenuView, 
     }
 
     @Nullable @Override public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        CustomRVView<FoodItem> customRVView = new CustomRVView<>(getContext());
+        CustomRVView customRVView = new CustomRVView(getContext());
+//        View customRVView = inflater.inflate(R.layout.food_list, container, false);
         initUi(customRVView);
         return customRVView;
     }
 
-    private void initUi(CustomRVView<FoodItem> view) {
+    private void initUi(View view) {
+        ButterKnife.bind(this, view);
         List<FoodItem> foodItems = createItems(messageString);
         if(adapter2 == null){
-            adapter2 = new FoodListAdapter2(foodItems, Glide.with(this), getContext());
+            adapter2 = new FoodListAdapter2(foodItems, Glide.with(this), getContext(),false);
+        }else {
+            adapter2.update(foodItems);
+        }
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setAdapter(adapter2);
+    }
+
+    private void initUi(CustomRVView view) {
+        List<FoodItem> foodItems = createItems(messageString);
+        if(adapter2 == null){
+            adapter2 = new FoodListAdapter2(foodItems, Glide.with(this), getContext(), true);
         }else {
             adapter2.update(foodItems);
         }

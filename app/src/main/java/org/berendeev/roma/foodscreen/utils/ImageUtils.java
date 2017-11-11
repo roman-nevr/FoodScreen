@@ -25,4 +25,8 @@ public class ImageUtils{
 		}
 		return drawable;
 	}
+
+	public static int dpToPixels(int dp, float density){
+		return (int) (dp * density);
+	}
 }

@@ -54,7 +54,6 @@
             android:text="нету"
             android:textColor="@color/red"
             style="@style/Text16Title"
-            android:visibility="gone"
             tools:visibility="visible"
             />
         <LinearLayout

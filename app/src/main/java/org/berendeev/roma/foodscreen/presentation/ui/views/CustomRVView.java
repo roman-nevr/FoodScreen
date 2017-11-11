@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,15 +20,20 @@ import org.berendeev.roma.foodscreen.R;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.support.v7.widget.RecyclerView.SCROLL_STATE_IDLE;
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
+import static org.berendeev.roma.foodscreen.utils.ImageUtils.dpToPixels;
 
 
-public class CustomRVView<T> extends FrameLayout {
+public class CustomRVView extends FrameLayout {
+
+    private static final int PROGRESS_TOP_MARGIN = 16; //dp
 
     private ProgressBar progressBar;
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
+    private float density;
 
     public CustomRVView(@NonNull Context context) {
         super(context);
@@ -46,11 +52,13 @@ public class CustomRVView<T> extends FrameLayout {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        int width = MeasureSpec.getSize(widthMeasureSpec);
+        int height = MeasureSpec.getSize(heightMeasureSpec);
         if (progressBar.getVisibility() != GONE){
             int childHeightMeasureSpec = MeasureSpec.makeMeasureSpec(
-                    300, MeasureSpec.AT_MOST);
+                    height, MeasureSpec.AT_MOST);
             int childWidthMeasureSpec = MeasureSpec.makeMeasureSpec(
-                    300, MeasureSpec.AT_MOST);
+                    width, MeasureSpec.AT_MOST);
             progressBar.measure(childWidthMeasureSpec, childHeightMeasureSpec);
         }
 
@@ -63,32 +71,52 @@ public class CustomRVView<T> extends FrameLayout {
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         if (changed){
             if (progressBar.getVisibility() != GONE){
-                progressBar.layout(left, top, right, bottom);
+                int pbTop = dpToPixels(PROGRESS_TOP_MARGIN, density);
+                int pbLeft = (left + right) / 2 - progressBar.getMeasuredWidth() / 2;
+                int pbRight = pbLeft + progressBar.getMeasuredWidth();
+                int pbBottom = pbTop + progressBar.getMeasuredHeight();
+                progressBar.layout(pbLeft, pbTop, pbRight, pbBottom);
             }
             recyclerView.layout(left, top, right, bottom);
         }
     }
 
-    @Override
-    public void draw(Canvas canvas) {
-        super.draw(canvas);
-    }
-
     private void initUi(Context context, AttributeSet attributeSet){
         recyclerView = new RecyclerView(context);
-        recyclerView.setLayoutParams(new ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT));
+        recyclerView.setLayoutParams(new ViewGroup.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.setHasFixedSize(true);
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                enableLayers(newState != SCROLL_STATE_IDLE);
+            }
 
-        progressBar = (ProgressBar) inflate(context, R.layout.progress_bar, this).findViewById(R.id.progress_bar);
-//        progressBar = new ProgressBar(context);
-//        progressBar.setLayoutParams(new ViewGroup.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
+            private void enableLayers(boolean enable){
+                final int layerType = enable
+                        ? View.LAYER_TYPE_HARDWARE : View.LAYER_TYPE_NONE;
+                recyclerView.setLayerType(layerType, null);
+            }
 
+            @Override public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+            }
+        });
+        addView(recyclerView);
+
+        progressBar = new ProgressBar(context);
+        progressBar.setLayoutParams(new ViewGroup.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
+        addView(progressBar);
+        progressBar.setVisibility(GONE);
+        density = context.getResources().getDisplayMetrics().density;
     }
 
     public void setAdapter(RecyclerView.Adapter adapter){
         this.adapter = adapter;
         recyclerView.setAdapter(adapter);
+    }
+
+    public RecyclerView.Adapter getAdapter(){
+        return adapter;
     }
 
     public void showProgress(){
@@ -99,7 +127,7 @@ public class CustomRVView<T> extends FrameLayout {
         progressBar.setVisibility(GONE);
     }
 
-    public interface Updatable<T>{
-        abstract void update(List<T> items);
+    @Override public boolean hasOverlappingRendering() {
+        return false;
     }
 }

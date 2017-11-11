@@ -6,6 +6,8 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import org.berendeev.roma.foodscreen.presentation.ui.fragment.FoodListFragment;
+import org.berendeev.roma.foodscreen.presentation.ui.fragment.StubRecyclerViewFragment;
+import org.berendeev.roma.foodscreen.presentation.ui.views.CustomRVView;
 
 import java.util.List;
 
@@ -20,7 +22,7 @@ public class FoodViewPagerAdapter extends FragmentPagerAdapter {
     }
 
     @Override public Fragment getItem(int position) {
-        return FoodListFragment.getInstance(titles.get(position));
+        return StubRecyclerViewFragment.getInstance(titles.get(position));
     }
 
     @Override public int getCount() {

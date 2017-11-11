@@ -2,9 +2,8 @@ package org.berendeev.roma.foodscreen.presentation.ui.adapter;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.LayoutRes;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -20,7 +19,7 @@ import com.bumptech.glide.request.transition.Transition;
 
 import org.berendeev.roma.foodscreen.R;
 import org.berendeev.roma.foodscreen.domain.model.FoodItem;
-import org.berendeev.roma.foodscreen.presentation.ui.views.CustomRVView;
+import org.berendeev.roma.foodscreen.presentation.ui.views.FoodItemView;
 import org.berendeev.roma.foodscreen.utils.ImageUtils;
 
 import java.util.List;
@@ -28,17 +27,20 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class FoodListAdapter2 extends MvpBaseAdapter<FoodListAdapter2.FoodViewHolder> implements CustomRVView.Updatable<FoodItem> {
+public class FoodListAdapter2 extends MvpBaseAdapter<FoodListAdapter2.FoodViewHolder> {
 
     private final RequestManager glide;
     private final Context context;
     private List<FoodItem> products;
 
-    public FoodListAdapter2(List<FoodItem> products, RequestManager glide, Context context) {
+    private boolean newView;
+
+    public FoodListAdapter2(List<FoodItem> products, RequestManager glide, Context context, boolean newView) {
 //        super(parentDelegate, String.valueOf(0)); //wtf String.valueOf(0) ?
         this.products = products;
         this.glide = glide;
         this.context = context;
+        this.newView = newView;
         setHasStableIds(true);
     }
 
@@ -51,7 +53,13 @@ public class FoodListAdapter2 extends MvpBaseAdapter<FoodListAdapter2.FoodViewHo
     }
 
     @Override public FoodViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = inflate(R.layout.menu_item_pizza_list2, parent);
+        View view;
+        if (newView) {
+            view = new FoodItemView(context);
+        } else {
+            view = inflate(R.layout.menu_item_pizza_list2, parent);
+        }
+
         return new FoodViewHolder(view);
     }
 
@@ -68,22 +76,31 @@ public class FoodListAdapter2 extends MvpBaseAdapter<FoodListAdapter2.FoodViewHo
         notifyDataSetChanged();
     }
 
-    class FoodViewHolder extends RecyclerView.ViewHolder{
+    class FoodViewHolder extends RecyclerView.ViewHolder {
+        private FoodItemView foodItemView;
 
         @BindView(R.id.label_title) TextView title;
         @BindView(R.id.imageView) ImageView imageView;
 
         public FoodViewHolder(View itemView) {
             super(itemView);
-            ButterKnife.bind(this, itemView);
+            if (newView) {
+                foodItemView = (FoodItemView) itemView;
+            } else {
+                ButterKnife.bind(this, itemView);
+            }
         }
 
-        private void bind(FoodItem foodItem){
-            title.setText(foodItem.name());
+        private void bind(FoodItem foodItem) {
+            if (newView) {
+                foodItemView.getTitle().setText(foodItem.name());
+            } else {
+                title.setText(foodItem.name());
+            }
             showImage(foodItem.url());
         }
 
-        private void showImage(String url){
+        private void showImage(String url) {
 
             RequestOptions options = new RequestOptions()
                     .centerCrop()
@@ -95,10 +112,20 @@ public class FoodListAdapter2 extends MvpBaseAdapter<FoodListAdapter2.FoodViewHo
             requestBuilder
                     .apply(options)
                     .transition(DrawableTransitionOptions.withCrossFade())
-                    .into(new SimpleTarget<Drawable>(){
+                    .into(new SimpleTarget<Drawable>() {
+                        @Override public void onLoadStarted(@Nullable Drawable placeholder) {
+                            if (newView) {
+                                foodItemView.getImageView().setImageDrawable(placeholder);
+                            }
+                        }
+
                         @Override
                         public void onResourceReady(Drawable resource, Transition<? super Drawable> transition) {
-                            imageView.setImageDrawable(resource);
+                            if (newView) {
+                                foodItemView.getImageView().setImageDrawable(resource);
+                            } else {
+                                imageView.setImageDrawable(resource);
+                            }
                         }
                     });
         }

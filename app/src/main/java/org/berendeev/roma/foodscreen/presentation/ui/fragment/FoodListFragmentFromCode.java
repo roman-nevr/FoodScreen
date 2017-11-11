@@ -1,18 +1,15 @@
 package org.berendeev.roma.foodscreen.presentation.ui.fragment;
 
-import android.content.Context;
+import android.animation.Animator;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
-import android.widget.Toast;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
@@ -20,7 +17,6 @@ import com.bumptech.glide.Glide;
 
 import org.berendeev.roma.foodscreen.R;
 import org.berendeev.roma.foodscreen.domain.model.FoodItem;
-import org.berendeev.roma.foodscreen.presentation.AnimationHandler;
 import org.berendeev.roma.foodscreen.presentation.mvp.presenter.FoodListPresenter;
 import org.berendeev.roma.foodscreen.presentation.mvp.view.FoodListView;
 import org.berendeev.roma.foodscreen.presentation.ui.adapter.FoodListAdapter;
@@ -32,7 +28,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class FoodListFragment extends MvpAppCompatFragment implements FoodListView {
+public class FoodListFragmentFromCode extends MvpAppCompatFragment implements FoodListView {
 
     public static final String TYPE = "type";
 
@@ -106,7 +102,7 @@ public class FoodListFragment extends MvpAppCompatFragment implements FoodListVi
 
     private void useAdapter2(List<FoodItem> foodItems){
         if(adapter2 == null){
-            adapter2 = new FoodListAdapter2(foodItems, Glide.with(this), getContext(), false);
+            adapter2 = new FoodListAdapter2(foodItems, Glide.with(this), getContext(), true);
             recyclerView.setAdapter(adapter2);
         }else {
             adapter2.update(foodItems);
@@ -117,12 +113,16 @@ public class FoodListFragment extends MvpAppCompatFragment implements FoodListVi
         type = getArguments().getString(TYPE);
     }
 
-    public static FoodListFragment getInstance(String type) {
-        FoodListFragment fragment = new FoodListFragment();
+    public static FoodListFragmentFromCode getInstance(String type) {
+        FoodListFragmentFromCode fragment = new FoodListFragmentFromCode();
         Bundle bundle = new Bundle();
         bundle.putString(TYPE, type);
         fragment.setArguments(bundle);
         return fragment;
+    }
+
+    @Override public Animator onCreateAnimator(int transit, boolean enter, int nextAnim) {
+        return super.onCreateAnimator(transit, enter, nextAnim);
     }
 
     @Override

@@ -2,8 +2,10 @@ package org.berendeev.roma.foodscreen.domain.model;
 
 import com.google.auto.value.AutoValue;
 
+import org.berendeev.roma.foodscreen.presentation.ui.views.CustomRVView;
+
 @AutoValue
-public abstract class FoodItem {
+public abstract class FoodItem{
 
     public abstract String name();
     public abstract String url();
