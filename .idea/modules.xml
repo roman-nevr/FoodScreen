@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/FoodScreen.iml" filepath="$PROJECT_DIR$/.idea/FoodScreen.iml" />
       <module fileurl="file://$PROJECT_DIR$/FoodScreen.iml" filepath="$PROJECT_DIR$/FoodScreen.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
